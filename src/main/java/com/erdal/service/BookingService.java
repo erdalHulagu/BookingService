@@ -18,13 +18,13 @@ public interface BookingService {
 	
 	BookingDTO createBooking(BookingRequest bookingRequest,UserDTO userDTO,SaloonDTO saloonDTO,Set<ServiceOfferingDTO> serviceOfferingDTOs);
 	
-	List<BookingDTO> getBookingsByBookingsCostemerId(Long customerId);
+//	List<BookingDTO> getBookingsByBookingsCostemerId(Long customerId);
 	
 	List<BookingDTO>getBookingBySaloonId(Long saloonId);
 	
-	Booking getBookingById(Long id);
+	BookingDTO getBookingById(Long id);
 	
-	Booking upDateBooking(Long id,BookingStatus bookingStatus);
+	BookingDTO upDateBooking(Long id,BookingStatus bookingStatus);
 	
 	void deleteBookingById(Long id);
 	

@@ -1,6 +1,7 @@
 package com.erdal.DTO;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Set;
 
 import com.erdal.status.BookingStatus;
@@ -10,11 +11,11 @@ import lombok.Data;
 @Data
 public class BookingDTO {
 	
-//	private Long id;
+	private Long id;
 
 	private Long saloonId;
 
-	private Long costumerId;
+	private Long custumerId;
 
 	private Set<Long> serviceOfferinIds;
 
@@ -25,4 +26,17 @@ public class BookingDTO {
 	private LocalDateTime endTime;
 
 	private Integer totalPrice;
+	
+	@Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof BookingDTO)) return false;
+        BookingDTO that = (BookingDTO) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

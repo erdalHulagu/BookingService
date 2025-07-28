@@ -24,7 +24,7 @@ public class Booking {
 
 	private Long saloonId;
 
-	private Long costumerId;
+	private Long custumerId;
 
 	@ElementCollection
 	private Set<Long> serviceOfferinIds;

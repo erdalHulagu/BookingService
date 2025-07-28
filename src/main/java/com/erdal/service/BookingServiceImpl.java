@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.erdal.DTO.BookingDTO;
+import com.erdal.DTO.BookingSlotDTO;
 import com.erdal.DTO.SaloonDTO;
 import com.erdal.DTO.ServiceOfferingDTO;
 import com.erdal.DTO.UserDTO;
@@ -55,7 +56,7 @@ public class BookingServiceImpl implements BookingService {
 		Set<Long> listIds = serviceOfferingDTOset.stream().map(s -> s.getId()).collect(Collectors.toSet());
 
 		Booking booking = new Booking();
-		booking.setCostumerId(userDTO.getId());
+		booking.setCustumerId(userDTO.getId());
 		booking.setBookingStatus(BookingStatus.PENDING);
 		booking.setEndTime(bookingEndTime);
 		booking.setStartTime(bookingStartTime);
@@ -108,13 +109,13 @@ public class BookingServiceImpl implements BookingService {
 
 	}
 
-	@Override
-	public List<BookingDTO> getBookingsByBookingsCostemerId(Long customerId) {
-
-		List<Booking> bookings = bookingRepository.findByCustomerId(customerId);
-
-		return BookingMapper.mapAllListToBookingDTO(bookings);
-	}
+//	@Override
+//	public List<BookingDTO> getBookingsByBookingsCostemerId(Long customerId) {
+//
+//		List<Booking> bookings = bookingRepository.findByCustomerId(customerId);
+//
+//		return BookingMapper.mapAllListToBookingDTO(bookings);
+//	}
 
 	@Override
 	public List<BookingDTO> getBookingBySaloonId(Long saloonId) {
@@ -124,23 +125,27 @@ public class BookingServiceImpl implements BookingService {
 	}
 
 	@Override
-	public Booking getBookingById(Long id) {
+	public BookingDTO getBookingById(Long id) {
 
-		return getByBookingId(id);
+		Booking booking= getByBookingId(id);
+		
+		return BookingMapper.mapToBookingDTO(booking);
 	}
 
 	@Override
-	public Booking upDateBooking(Long id, BookingStatus bookingStatus) {
-		Booking booking = getBookingById(id);
+	public BookingDTO upDateBooking(Long id, BookingStatus bookingStatus) {
+		Booking booking =getByBookingId(id);
 		booking.setBookingStatus(bookingStatus);
-
-		return bookingRepository.save(booking);
+		Booking newBooking =bookingRepository.save(booking);
+		
+		return BookingMapper.mapToBookingDTO(newBooking);
+		 
+				
 	}
 
 	@Override
 	public void deleteBookingById(Long id) {	
     bookingRepository.deleteById(id);
-    
 	}
 
 	@Override
@@ -153,6 +158,8 @@ public class BookingServiceImpl implements BookingService {
 		List<BookingDTO> bookings = allBookings.stream().filter(
 				booking -> isSameDate(booking.getStartTime(), localDate) || isSameDate(booking.getEndTime(), localDate))
 				.collect(Collectors.toList());
+		
+		
 
 		return bookings;
 

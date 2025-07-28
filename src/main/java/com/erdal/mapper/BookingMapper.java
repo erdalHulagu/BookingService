@@ -12,8 +12,9 @@ public class BookingMapper {
 	public static BookingDTO mapToBookingDTO(Booking booking) {
 
 		BookingDTO bookingDTO = new BookingDTO();
+		bookingDTO.setId(booking.getId());
 		bookingDTO.setBookingStatus(booking.getBookingStatus());
-		bookingDTO.setCostumerId(booking.getCostumerId());
+		bookingDTO.setCustumerId(booking.getCustumerId());
 		bookingDTO.setEndTime(booking.getEndTime());
 		bookingDTO.setStartTime(booking.getStartTime());
 		bookingDTO.setSaloonId(booking.getSaloonId());
@@ -27,8 +28,9 @@ public class BookingMapper {
 	public static Booking mapDtoToBooking(BookingDTO bookingDTO) {
 		
 		Booking booking = new Booking();
+		booking.setId(bookingDTO.getId());
 		booking.setBookingStatus(bookingDTO.getBookingStatus());
-		booking.setCostumerId(bookingDTO.getCostumerId());
+		booking.setCustumerId(bookingDTO.getCustumerId());
 		booking.setEndTime(bookingDTO.getEndTime());
 		booking.setStartTime(bookingDTO.getStartTime());
 		booking.setSaloonId(bookingDTO.getSaloonId());
@@ -42,11 +44,6 @@ public class BookingMapper {
 	
 
 
-//	public static List<BookingDTO> mapAllListToCategoriesDTO(Set<Booking> bookings) {
-//	    return bookings.stream()
-//	        .map(BookingMapper::mapToBookingDTO)
-//	        .collect(Collectors.toSet());
-//	}
 	public static List<BookingDTO> mapAllListToBookingDTO(List<Booking> bookings) {
 		return bookings.stream()
 				.map(BookingMapper::mapToBookingDTO).collect(Collectors.toList());
