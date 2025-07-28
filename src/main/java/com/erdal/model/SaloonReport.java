@@ -11,7 +11,7 @@ public class SaloonReport {
 
 	private Double totalEarnings;
 
-	private Integer totalBookings;
+	private Double totalBookings;
 
 	private Double totalRefund;
 

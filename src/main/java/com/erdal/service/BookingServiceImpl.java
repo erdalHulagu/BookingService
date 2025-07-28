@@ -119,7 +119,7 @@ public class BookingServiceImpl implements BookingService {
 	@Override
 	public List<BookingDTO> getBookingBySaloonId(Long saloonId) {
 
-		List<Booking> bookings = bookingRepository.findBySaloonId(saloonId);
+		 List<Booking>bookings =getAllBookingBySaloonId(saloonId);
 		return BookingMapper.mapAllListToBookingDTO(bookings);
 	}
 
@@ -138,9 +138,9 @@ public class BookingServiceImpl implements BookingService {
 	}
 
 	@Override
-	public void deleteBookingById(Long id) {
-		// TODO Auto-generated method stub
-
+	public void deleteBookingById(Long id) {	
+    bookingRepository.deleteById(id);
+    
 	}
 
 	@Override
@@ -166,15 +166,42 @@ public class BookingServiceImpl implements BookingService {
 
 	@Override
 	public SaloonReport getSaloonReport(Long saloonId) {
-		// TODO Auto-generated method stub
-		return null;
+
+		 List<Booking>bookings =getAllBookingBySaloonId(saloonId);
+		 
+		 Double totalEarning=bookings.stream().mapToDouble(Booking::getTotalPrice).sum();
+		 
+		 Integer totalEarnings=bookings.size();
+		 
+		 Double totalEarningsDouble = totalEarnings.doubleValue();
+		 
+		 List<Booking> cancelledBookings=bookings.stream().filter(booking->booking.getBookingStatus().equals(BookingStatus.CANSELLED)).collect(Collectors.toList());
+		
+		 Double totalRefun=cancelledBookings.stream().mapToDouble(cancel->cancel.getTotalPrice()).sum();
+		 
+		 SaloonReport saloonReport=new SaloonReport();
+		 
+		 saloonReport.setSaloonId(saloonId);
+		 saloonReport.setCancelledBookings(cancelledBookings.size());
+		 saloonReport.setTotalBookings(totalEarning);
+		 saloonReport.setTotalRefund(totalRefun);
+		 saloonReport.setTotalEarnings(totalEarningsDouble);
+		 return saloonReport;
 	}
 
-	// ------ Metods belongs to this class
+	// ------ METOD BELONGS TO CLASS
+	
+	// ------ get By Booking Id --------
 	private Booking getByBookingId(Long id) {
 
 		return bookingRepository.findById(id)
 				.orElseThrow(() -> new BookingNotFoundExeption(BookingErrorMessages.BOOKING_NOT_FOUND));
 	}
+	// ------ get booking by saloon id --------
+	public List<Booking> getAllBookingBySaloonId(Long saloonId) {
 
+		List<Booking> bookings = bookingRepository.findBySaloonId(saloonId);
+		
+		return bookings;
+	}
 }
