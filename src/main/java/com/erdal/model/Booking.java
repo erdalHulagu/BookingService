@@ -29,12 +29,12 @@ public class Booking {
 	@ElementCollection
 	private Set<Long> serviceOfferinIds;
 
-	private BookingStatus bookingStatusÏ = BookingStatus.PENDING;
+	private BookingStatus bookingStatus = BookingStatus.PENDING;
 
 	private LocalDateTime startTime;
 
 	private LocalDateTime endTime;
 
-	private int totalServices;
+	private Integer totalPrice;
 
 }

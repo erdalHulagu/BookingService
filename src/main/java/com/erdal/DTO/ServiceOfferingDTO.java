@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ServiceOfferingDTO {
 	
+	private Long id;
 	
 	private String offeringName;
 	

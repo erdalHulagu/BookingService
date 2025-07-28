@@ -1,5 +1,7 @@
 package com.erdal.DTO;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -37,10 +39,10 @@ public class SaloonDTO {
 	private Long ownerId;
 	
 	
-	private LocalTime openTime;
+	private LocalDate openTime;
 	
 	
-	private LocalTime closeTime;
+	private LocalDate closeTime;
 	
 	
 

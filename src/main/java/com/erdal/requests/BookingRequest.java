@@ -1,26 +1,21 @@
 package com.erdal.requests;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.time.LocalDateTime;
+import java.util.Set;
+
+import lombok.Data;
 
 	
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 	public class BookingRequest {
 		
 		
-	private Long id;
+	private LocalDateTime startTime;
 	
-	private String  categoryName;
+	private LocalDateTime  endTime;
 	
-	private String image;
-	
-	private Long  saloonId;
+	private Set<Long> serviceOfferingId;
 	
 		
 
