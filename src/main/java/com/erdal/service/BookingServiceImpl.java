@@ -2,6 +2,7 @@ package com.erdal.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -72,7 +73,9 @@ public class BookingServiceImpl implements BookingService {
 	public Boolean isTimeSlotAvailable(SaloonDTO saloonDTO, LocalDateTime bookingStartTime,
 			LocalDateTime bookingCloseTime) {
 
-		List<Booking> existingBookings = getBookingBySaloonId(saloonDTO.getId());
+		List<BookingDTO> existingBookingsDTOs = getBookingBySaloonId(saloonDTO.getId());
+		
+		List<Booking> existingBookings=BookingMapper.mapToDtoToBooking(existingBookingsDTOs);
 
 		LocalDateTime saloonOpenTime = saloonDTO.getOpenTime().atTime(bookingStartTime.toLocalTime());
 		LocalDateTime saloonCloseTime = saloonDTO.getCloseTime().atTime(bookingCloseTime.toLocalTime());
@@ -106,28 +109,32 @@ public class BookingServiceImpl implements BookingService {
 	}
 
 	@Override
-	public List<Booking> getBookingsByBookingsCostemerId(Long customerId) {
+	public List<BookingDTO> getBookingsByBookingsCostemerId(Long customerId) {
 
-		return bookingRepository.findByCustomerId(customerId);
+		List<Booking> bookings = bookingRepository.findByCustomerId(customerId);
+
+		return BookingMapper.mapAllListToBookingDTO(bookings);
 	}
 
 	@Override
-	public List<Booking> getBookingBySaloonId(Long saloonId) {
+	public List<BookingDTO> getBookingBySaloonId(Long saloonId) {
 
-		return bookingRepository.findBySaloonId(saloonId);
+		List<Booking> bookings = bookingRepository.findBySaloonId(saloonId);
+		return BookingMapper.mapAllListToBookingDTO(bookings);
 	}
 
 	@Override
 	public Booking getBookingById(Long id) {
-		
+
 		return getByBookingId(id);
 	}
-	
 
 	@Override
 	public Booking upDateBooking(Long id, BookingStatus bookingStatus) {
-		// TODO Auto-generated method stub
-		return null;
+		Booking booking = getBookingById(id);
+		booking.setBookingStatus(bookingStatus);
+
+		return bookingRepository.save(booking);
 	}
 
 	@Override
@@ -137,9 +144,24 @@ public class BookingServiceImpl implements BookingService {
 	}
 
 	@Override
-	public List<Booking> getBookingByDate(LocalDate localDate, Long saloonId) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<BookingDTO> getBookingByDate(LocalDate localDate, Long saloonId) {
+		List<BookingDTO> allBookings = getBookingBySaloonId(saloonId);
+		if (localDate == null) {
+			return allBookings;
+		}
+
+		List<BookingDTO> bookings = allBookings.stream().filter(
+				booking -> isSameDate(booking.getStartTime(), localDate) || isSameDate(booking.getEndTime(), localDate))
+				.collect(Collectors.toList());
+
+		return bookings;
+
+	}
+
+    //--------- this metod blongs to get booking by date
+	private boolean isSameDate(LocalDateTime dateTime, LocalDate localDate) {
+
+		return dateTime.toLocalDate().isEqual(localDate);
 	}
 
 	@Override
@@ -147,10 +169,12 @@ public class BookingServiceImpl implements BookingService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	//------ Metods belongs to this class
-	public Booking getByBookingId(Long id) {
-		
-		return bookingRepository.findById(id).orElseThrow(()->new BookingNotFoundExeption(BookingErrorMessages.BOOKING_NOT_FOUND));
+
+	// ------ Metods belongs to this class
+	private Booking getByBookingId(Long id) {
+
+		return bookingRepository.findById(id)
+				.orElseThrow(() -> new BookingNotFoundExeption(BookingErrorMessages.BOOKING_NOT_FOUND));
 	}
 
 }

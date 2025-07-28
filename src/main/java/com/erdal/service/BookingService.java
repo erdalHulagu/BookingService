@@ -18,9 +18,9 @@ public interface BookingService {
 	
 	BookingDTO createBooking(BookingRequest bookingRequest,UserDTO userDTO,SaloonDTO saloonDTO,Set<ServiceOfferingDTO> serviceOfferingDTOs);
 	
-	List<Booking> getBookingsByBookingsCostemerId(Long customerId);
+	List<BookingDTO> getBookingsByBookingsCostemerId(Long customerId);
 	
-	List<Booking>getBookingBySaloonId(Long saloonId);
+	List<BookingDTO>getBookingBySaloonId(Long saloonId);
 	
 	Booking getBookingById(Long id);
 	
@@ -28,7 +28,7 @@ public interface BookingService {
 	
 	void deleteBookingById(Long id);
 	
-	List<Booking>getBookingByDate(LocalDate localDate,Long saloonId);
+	List<BookingDTO>getBookingByDate(LocalDate localDate,Long saloonId);
 	
 	SaloonReport getSaloonReport(Long saloonId);
 	
