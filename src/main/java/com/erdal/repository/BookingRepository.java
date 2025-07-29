@@ -8,7 +8,7 @@ import com.erdal.model.Booking;
 
 public interface BookingRepository extends JpaRepository<Booking,Long>{
 	
-	List<Booking> findByCustomerId(Long costomerId);
+	List<Booking> findByCustomerId(Long customerId);
 	
 	List<Booking> findBySaloonId(Long saloonId);
 

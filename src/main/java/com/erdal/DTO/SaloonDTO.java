@@ -39,10 +39,10 @@ public class SaloonDTO {
 	private Long ownerId;
 	
 	
-	private LocalDate openTime;
+	private LocalTime openTime;
 	
 	
-	private LocalDate closeTime;
+	private LocalTime closeTime;
 	
 	
 

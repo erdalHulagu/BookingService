@@ -14,7 +14,7 @@ public class BookingMapper {
 		BookingDTO bookingDTO = new BookingDTO();
 		bookingDTO.setId(booking.getId());
 		bookingDTO.setBookingStatus(booking.getBookingStatus());
-		bookingDTO.setCustumerId(booking.getCustumerId());
+		bookingDTO.setCustomerId(booking.getCustomerId());
 		bookingDTO.setEndTime(booking.getEndTime());
 		bookingDTO.setStartTime(booking.getStartTime());
 		bookingDTO.setSaloonId(booking.getSaloonId());
@@ -30,7 +30,7 @@ public class BookingMapper {
 		Booking booking = new Booking();
 		booking.setId(bookingDTO.getId());
 		booking.setBookingStatus(bookingDTO.getBookingStatus());
-		booking.setCustumerId(bookingDTO.getCustumerId());
+		booking.setCustomerId(bookingDTO.getCustomerId());
 		booking.setEndTime(bookingDTO.getEndTime());
 		booking.setStartTime(bookingDTO.getStartTime());
 		booking.setSaloonId(bookingDTO.getSaloonId());

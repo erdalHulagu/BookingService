@@ -15,7 +15,7 @@ public class BookingDTO {
 
 	private Long saloonId;
 
-	private Long custumerId;
+	private Long customerId;
 
 	private Set<Long> serviceOfferinIds;
 

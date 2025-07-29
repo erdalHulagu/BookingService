@@ -1,6 +1,7 @@
 package com.erdal.controller;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -9,6 +10,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -30,22 +32,24 @@ import com.erdal.status.BookingStatus;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-//@RequiredArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/api/bookings")
 public class BookingController {
 	
-	@Autowired
-	private  BookingService bookingService;
+	
+	private final BookingService bookingService;
 	
 	
 	@PostMapping
-	public ResponseEntity<BookingDTO> createBooking(@RequestParam Long saloonId,@RequestBody BookingRequest bookingRequest){ 
+	public ResponseEntity<BookingDTO> createBooking(@RequestParam("saloonId") Long saloonId,@RequestBody BookingRequest bookingRequest){ 
 		
 		UserDTO userDTO=new UserDTO();
 		userDTO.setId(1L);
 		
 		SaloonDTO saloonDto=new SaloonDTO();
 		saloonDto.setId(saloonId);
+		saloonDto.setOpenTime(LocalTime.of(9, 0));
+		saloonDto.setCloseTime(LocalTime.of(18, 0));
 		
 		Set<ServiceOfferingDTO> serviceOfferingDTOs=new HashSet<>();
 		
@@ -62,17 +66,17 @@ public class BookingController {
 		return ResponseEntity.ok(bookingDTO);
 	}
 	
-//	@GetMapping("/customer")
-//	public ResponseEntity<Set<BookingDTO> >getBookingByCustomer(@PathVariable Long customerId) {
-//		
-//		List<BookingDTO> bookingDTOs=bookingService.getBookingsByBookingsCostemerId(1L);
-//		 
-//		Set<BookingDTO>bookingDTOsSet=new HashSet<>(bookingDTOs);
-//		return ResponseEntity.ok(bookingDTOsSet);
-//	}
+	@GetMapping("/customer")
+	public ResponseEntity<Set<BookingDTO> >getBookingByCustomer() {
+		
+		List<BookingDTO> bookingDTOs=bookingService.getBookingsByBookingsCostemerId(1L);
+		 
+		Set<BookingDTO>bookingDTOsSet=new HashSet<>(bookingDTOs);
+		return ResponseEntity.ok(bookingDTOsSet);
+	}
 	
 	@GetMapping("/saloon")
-	public ResponseEntity<Set<BookingDTO> >getBookingBySaloon(@PathVariable Long saloonId) {
+	public ResponseEntity<Set<BookingDTO> >getBookingBySaloon() {
 		
 		List<BookingDTO> bookingDTOs=bookingService.getBookingBySaloonId(1L);
 		
@@ -91,8 +95,8 @@ public class BookingController {
 		return ResponseEntity.ok(bookingDTO);
 	}
 	
-	@PutMapping
-	public ResponseEntity <BookingDTO> updateBookingStatus(@PathVariable Long id, @RequestParam BookingStatus status) {
+	@PatchMapping("{id}")
+	public ResponseEntity <BookingDTO> updateBookingStatus(@PathVariable Long id, @RequestParam("status") BookingStatus status) {
 
 		BookingDTO bookingDTO = bookingService.upDateBooking(id,status);
 

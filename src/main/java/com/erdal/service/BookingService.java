@@ -18,7 +18,7 @@ public interface BookingService {
 	
 	BookingDTO createBooking(BookingRequest bookingRequest,UserDTO userDTO,SaloonDTO saloonDTO,Set<ServiceOfferingDTO> serviceOfferingDTOs);
 	
-//	List<BookingDTO> getBookingsByBookingsCostemerId(Long customerId);
+	List<BookingDTO> getBookingsByBookingsCostemerId(Long customerId);
 	
 	List<BookingDTO>getBookingBySaloonId(Long saloonId);
 	

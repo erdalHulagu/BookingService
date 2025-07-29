@@ -56,7 +56,7 @@ public class BookingServiceImpl implements BookingService {
 		Set<Long> listIds = serviceOfferingDTOset.stream().map(s -> s.getId()).collect(Collectors.toSet());
 
 		Booking booking = new Booking();
-		booking.setCustumerId(userDTO.getId());
+		booking.setCustomerId(userDTO.getId());
 		booking.setBookingStatus(BookingStatus.PENDING);
 		booking.setEndTime(bookingEndTime);
 		booking.setStartTime(bookingStartTime);
@@ -77,11 +77,11 @@ public class BookingServiceImpl implements BookingService {
 		List<BookingDTO> existingBookingsDTOs = getBookingBySaloonId(saloonDTO.getId());
 		
 		List<Booking> existingBookings=BookingMapper.mapToDtoToBooking(existingBookingsDTOs);
+		
+		LocalDateTime saloonOpenDateTime = bookingStartTime.toLocalDate().atTime(saloonDTO.getOpenTime());
+		LocalDateTime saloonCloseDateTime = bookingStartTime.toLocalDate().atTime(saloonDTO.getCloseTime());
 
-		LocalDateTime saloonOpenTime = saloonDTO.getOpenTime().atTime(bookingStartTime.toLocalTime());
-		LocalDateTime saloonCloseTime = saloonDTO.getCloseTime().atTime(bookingCloseTime.toLocalTime());
-
-		if (bookingStartTime.isBefore(saloonOpenTime) || bookingCloseTime.isAfter(saloonCloseTime)) {
+		if (bookingStartTime.isBefore(saloonOpenDateTime) || bookingCloseTime.isAfter(saloonCloseDateTime)) {
 			throw new BookingBadRequestExeption(BookingErrorMessages.SALOON_IS_NOT_OPEN);
 		}
 
@@ -109,13 +109,13 @@ public class BookingServiceImpl implements BookingService {
 
 	}
 
-//	@Override
-//	public List<BookingDTO> getBookingsByBookingsCostemerId(Long customerId) {
-//
-//		List<Booking> bookings = bookingRepository.findByCustomerId(customerId);
-//
-//		return BookingMapper.mapAllListToBookingDTO(bookings);
-//	}
+	@Override
+	public List<BookingDTO> getBookingsByBookingsCostemerId(Long customerId) {
+
+		List<Booking> bookings = bookingRepository.findByCustomerId(customerId);
+
+		return BookingMapper.mapAllListToBookingDTO(bookings);
+	}
 
 	@Override
 	public List<BookingDTO> getBookingBySaloonId(Long saloonId) {
